@@ -1,0 +1,61 @@
+flowchart TD
+    User(["👤 Human User"])
+    Coordinator["🤖 Financial Coordinator Agent\n(Orchestrator)"]
+
+    User -->|"1. Provide ticker symbol,\nrisk tolerance & investment period"| Coordinator
+
+    subgraph Step1["Step 1: Market Analysis"]
+        DataAnalyst["📊 Data Analyst Agent"]
+        GoogleSearch[("🔍 Google Search Tool\n(SEC filings + market intel)")]
+        MarketReport[["market_data_analysis_output"]]
+        DataAnalyst -->|"repeated searches"| GoogleSearch
+        GoogleSearch -->|"raw data"| DataAnalyst
+        DataAnalyst --> MarketReport
+    end
+
+    subgraph Step2["Step 2: Trading Strategy Development"]
+        TradingAnalyst["📈 Trading Analyst Agent"]
+        TradingStrategies[["proposed_trading_strategies_output\n(≥5 strategies)"]]
+        TradingAnalyst --> TradingStrategies
+    end
+
+    subgraph Step3["Step 3: Execution Planning"]
+        ExecutionAgent["⚙️ Execution Agent"]
+        ExecutionPlan[["execution_plan_output\n(entry / hold / scale / exit)"]]
+        ExecutionAgent --> ExecutionPlan
+    end
+
+    subgraph Step4["Step 4: Risk Evaluation"]
+        RiskAgent["🛡️ Risk Evaluation Agent"]
+        RiskReport[["final_risk_assessment_output"]]
+        RiskAgent --> RiskReport
+    end
+
+    Coordinator -->|"delegates"| DataAnalyst
+    MarketReport -->|"passed to coordinator"| Coordinator
+
+    Coordinator -->|"delegates with\nmarket_data_analysis_output\n+ risk profile"| TradingAnalyst
+    TradingStrategies -->|"passed to coordinator"| Coordinator
+
+    Coordinator -->|"delegates with\nproposed_trading_strategies_output\n+ risk & execution prefs"| ExecutionAgent
+    ExecutionPlan -->|"passed to coordinator"| Coordinator
+
+    Coordinator -->|"delegates with\nall prior outputs\n+ user profile"| RiskAgent
+    RiskReport -->|"passed to coordinator"| Coordinator
+
+    Coordinator -->|"final consolidated\nfinancial advice"| User
+
+    style Coordinator fill:#4A90D9,color:#fff,stroke:#2c6fad
+    style DataAnalyst fill:#5BA85A,color:#fff,stroke:#3d7a3c
+    style TradingAnalyst fill:#E8973A,color:#fff,stroke:#c07020
+    style ExecutionAgent fill:#9B59B6,color:#fff,stroke:#7d3f99
+    style RiskAgent fill:#E74C3C,color:#fff,stroke:#c0392b
+    style GoogleSearch fill:#34495E,color:#fff,stroke:#1a2a3a
+    style MarketReport fill:#D5E8D4,color:#000,stroke:#82b366
+    style TradingStrategies fill:#FFE6CC,color:#000,stroke:#d6a35c
+    style ExecutionPlan fill:#E1D5E7,color:#000,stroke:#9673a6
+    style RiskReport fill:#F8CECC,color:#000,stroke:#b85450
+    style Step1 fill:#f0fff0,stroke:#82b366
+    style Step2 fill:#fff8f0,stroke:#d6a35c
+    style Step3 fill:#f8f0ff,stroke:#9673a6
+    style Step4 fill:#fff0f0,stroke:#b85450
